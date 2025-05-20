@@ -26,5 +26,41 @@
       window.location.href = 'login.html';
     }
   </script>
+  <h3>Đổi mật khẩu</h3>
+<input type="password" id="oldPass" placeholder="Mật khẩu cũ"><br>
+<input type="password" id="newPass" placeholder="Mật khẩu mới"><br>
+<button onclick="changePassword()">Đổi mật khẩu</button>
+
+<script>
+function changePassword() {
+  const username = localStorage.getItem('username');
+  const oldPass = document.getElementById('oldPass').value.trim();
+  const newPass = document.getElementById('newPass').value.trim();
+
+  if (!username || !oldPass || !newPass) {
+    alert("Vui lòng nhập đầy đủ thông tin.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('username', username);
+  formData.append('oldPass', oldPass);
+  formData.append('newPass', newPass);
+
+  fetch('change_pass.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.text())
+  .then(msg => {
+    if (msg.trim() === 'success') {
+      alert('Đổi mật khẩu thành công!');
+    } else {
+      alert('Lỗi: ' + msg);
+    }
+  });
+}
+</script>
+
 </body>
 </html>
