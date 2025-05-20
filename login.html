@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng nhập</title>
+</head>
+<body>
+  <h2>Vui lòng đăng nhập</h2>
+  <input type="text" id="username" placeholder="Tên đăng nhập"><br>
+  <input type="password" id="password" placeholder="Mật khẩu"><br>
+  <button onclick="login()">Đăng nhập</button>
+
+  <script>
+    async function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      const res = await fetch('ds.html');
+      const html = await res.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const rows = doc.querySelectorAll('table#accountList tr');
+
+      let success = false;
+      rows.forEach(row => {
+        const cols = row.querySelectorAll('td');
+        if (cols.length >= 2) {
+          const user = cols[0].textContent.trim();
+          const pass = cols[1].textContent.trim();
+          if (user === username && pass === password) {
+            success = true;
+          }
+        }
+      });
+
+      if (success) {
+        localStorage.setItem('authenticated', 'true');
+        localStorage.setItem('username', username);
+        window.location.href = 'index.html';
+      } else {
+        alert('Sai tên đăng nhập hoặc mật khẩu!');
+      }
+    }
+  </script>
+</body>
+</html>

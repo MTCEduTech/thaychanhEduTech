@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Trang chính</title>
+  <script>
+    if (localStorage.getItem('authenticated') !== 'true') {
+      alert('Bạn chưa đăng nhập!');
+      window.location.href = 'login.html';
+    }
+  </script>
+</head>
+<body>
+  <h1>Chào mừng đến trang chính</h1>
+  <h2>Chào <span id="user"></span>!</h2>
+  <script>
+    document.getElementById('user').textContent = localStorage.getItem('username') || 'bạn';
+  </script>
+  <button onclick="logout()">Đăng xuất</button>
+
+  <script>
+    function logout() {
+      localStorage.removeItem('authenticated');
+      localStorage.removeItem('username');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
